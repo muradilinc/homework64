@@ -1,31 +1,27 @@
-import {useEffect, useState} from 'react';
-import {Blog} from '../../types';
-import axiosApi from '../../axiosApi.ts';
+import React from 'react';
+import {Outlet, useParams} from 'react-router-dom';
+
+import {BlogState} from '../../types';
 import BlogView from '../../components/Blog/BlogView.tsx';
 
-const Home = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+interface Props {
+  blogs: BlogState[];
+}
 
-  const getBlogs = async () => {
-    try {
-      const response = await axiosApi.get<Blog[]>('blogs.json');
-      setBlogs(() => Object.values(response.data));
-    } catch (error) {
-      alert('Error ' + error);
-    }
-  };
-
-  useEffect(() => {
-    void getBlogs();
-  }, []);
-
+const Home: React.FC<Props> = ({blogs}) => {
+  const {id} = useParams();
 
   return (
     <div className="my-8">
-      <div className="grid grid-cols-1 gap-2">
-        {
-          blogs.map((blog) => (<BlogView key={blog.id} blog={blog}/>))
-        }
+      <div className={`grid ${id ? 'grid-cols-3' : 'grid-cols-1'} gap-2`}>
+        <div className="grid col-span-1 gap-2">
+          {
+            blogs.map((blog) => (<BlogView key={blog.idBlog} idBlog={blog.idBlog} blog={blog.blog}/>))
+          }
+        </div>
+        <div className="col-span-2">
+          <Outlet/>
+        </div>
       </div>
     </div>
   );

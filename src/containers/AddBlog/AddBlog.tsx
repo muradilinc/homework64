@@ -1,21 +1,39 @@
-import React, {useState} from 'react';
-import {Blog, BlogState} from '../../types';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Blog, BlogMuted} from '../../types';
 import axiosApi from '../../axiosApi.ts';
+import {useParams} from 'react-router-dom';
 
 const AddBlog = () => {
-  const [blog, setBlog] = useState<BlogState>({
+  const {id} = useParams();
+  const [blog, setBlog] = useState<BlogMuted>({
     title: '',
     description: '',
   });
 
-  const changeBlog = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const getBlog = useCallback(async () => {
+    try {
+      const response = await axiosApi.get(`blogs/${id}.json`);
+      console.log(response.data);
+      setBlog(response.data);
+    } catch (error) {
+      alert('Error! ' + error);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      void getBlog();
+    }
+  },[getBlog, id]);
+
+  const changeBlog = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
 
     setBlog(prevState => ({
       ...prevState,
       [name]: value
     }));
-  };
+  }, []);
 
   const postBlog = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -28,11 +46,16 @@ const AddBlog = () => {
     };
 
     try {
-      await axiosApi.post('blogs.json', dataBlog);
+      if (id){
+        await axiosApi.put(`blogs/${id}.json`, dataBlog);
+      } else {
+        await axiosApi.post('blogs.json', dataBlog);
+      }
     } catch (error) {
       alert('Error ' + error);
     }
   };
+
 
   return (
     <div>
@@ -56,7 +79,7 @@ const AddBlog = () => {
             placeholder="Description"
           />
         </div>
-        <button type='submit'>post</button>
+        <button type='submit'>{id ? 'edit' : 'post'}</button>
       </form>
     </div>
   );

@@ -5,7 +5,16 @@ export interface Blog {
   date: string;
 }
 
-export interface BlogState {
+export interface BlogApi {
+  [idBlog: string]: Blog;
+}
+
+export interface BlogState{
+  idBlog: string;
+  blog: Blog;
+}
+
+export interface BlogMuted {
   title: string;
   description: string;
 }

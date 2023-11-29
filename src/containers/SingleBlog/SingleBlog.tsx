@@ -24,16 +24,20 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
     }
   }, [id]);
 
+  const statusEdit = location.pathname.includes('edit');
+
   useEffect(() => {
-    void getBlog();
-  }, [getBlog]);
+    if (!statusEdit) {
+      void getBlog();
+    }
+  }, [getBlog, statusEdit]);
 
   const element = (
     <>
       {
         blog ?
           <div>
-            <span>{dayjs(blog.date).format("YYYY.MM.DD HH:mm:ss")}</span>
+            <span>{dayjs(blog.date).format('YYYY.MM.DD HH:mm:ss')}</span>
             <h1>{blog.title}</h1>
             <p>{blog.description}</p>
           </div>
@@ -42,8 +46,6 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
       }
     </>
   );
-
-  const statusEdit = location.pathname.includes('edit');
 
   return (
     <div className="border border-black">

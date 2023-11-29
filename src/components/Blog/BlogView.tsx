@@ -9,9 +9,7 @@ interface Props {
   idBlog: string;
 }
 
-const BlogView: React.FC<Props> = React.memo( ({blog, idBlog}) => {
-  console.log('render blog');
-
+const BlogView: React.FC<Props> = ({blog, idBlog}) => {
   return (
     <div className="border border-black p-2">
       <p>Crated on: <span>{dayjs(blog.date).format("YYYY.MM.DD HH:mm:ss")}</span></p>
@@ -21,8 +19,6 @@ const BlogView: React.FC<Props> = React.memo( ({blog, idBlog}) => {
       <Link to={`${BLOG_PAGE}/` + idBlog}>Read more</Link>
     </div>
   );
-}, (prevProps, nextProps) => {
-  return prevProps.blog !== nextProps.blog;
-});
+};
 
 export default BlogView;

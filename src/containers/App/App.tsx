@@ -12,10 +12,12 @@ import SingleBlog from '../SingleBlog/SingleBlog.tsx';
 const App = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState<BlogState[]>([]);
+  const [refreshData, setRefreshData] = useState(false);
 
   const getBlogs = async () => {
     try {
       const response = await axiosApi.get<BlogApi>('blogs.json');
+      console.log(response.data);
       setBlogs(() => {
         const blogsRes: BlogState[] = Object.keys(response.data).map(key => ({
           idBlog: key,
@@ -30,10 +32,9 @@ const App = () => {
 
   useEffect(() => {
     void getBlogs();
-  }, []);
+  }, [refreshData]);
 
   const removeBlog = async (id: string) => {
-    console.log(id);
     try{
       await axiosApi.delete(`blogs/${id}.json`);
       navigate(HOME_PAGE);
@@ -55,7 +56,7 @@ const App = () => {
               <SingleBlog removeBlog={removeBlog}/>
             )}>
               <Route path={`${BLOG_PAGE}/:id${EDIT_PAGE}`} element={(
-                <AddBlog/>
+                <AddBlog update={() => setRefreshData(prevState => !prevState)}/>
               )}/>
             </Route>
           </Route>

@@ -14,7 +14,8 @@ export interface BlogState{
   blog: Blog;
 }
 
-export interface BlogMuted {
+export interface BlogMutation {
   title: string;
   description: string;
+  date: string;
 }

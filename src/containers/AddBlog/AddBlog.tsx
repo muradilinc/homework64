@@ -1,19 +1,25 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Blog, BlogMuted} from '../../types';
+import {Blog, BlogMutation} from '../../types';
 import axiosApi from '../../axiosApi.ts';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
+import {BLOG_PAGE} from '../../constansts/constanst.ts';
 
-const AddBlog = () => {
+interface Props {
+  update?: () => void;
+}
+
+const AddBlog: React.FC<Props> = ({update}) => {
   const {id} = useParams();
-  const [blog, setBlog] = useState<BlogMuted>({
+  const navigate = useNavigate();
+  const [blog, setBlog] = useState<BlogMutation>({
     title: '',
     description: '',
+    date: ''
   });
 
   const getBlog = useCallback(async () => {
     try {
       const response = await axiosApi.get(`blogs/${id}.json`);
-      console.log(response.data);
       setBlog(response.data);
     } catch (error) {
       alert('Error! ' + error);
@@ -47,15 +53,18 @@ const AddBlog = () => {
 
     try {
       if (id){
-        await axiosApi.put(`blogs/${id}.json`, dataBlog);
+        await axiosApi.put(`blogs/${id}.json`, {...dataBlog, date: blog.date});
+        if (update) {
+          update();
+        }
+        navigate(`${BLOG_PAGE}/${id}`);
       } else {
-        await axiosApi.post('blogs.json', dataBlog);
+        await axiosApi.post('blogs.json', {...dataBlog});
       }
     } catch (error) {
       alert('Error ' + error);
     }
   };
-
 
   return (
     <div>

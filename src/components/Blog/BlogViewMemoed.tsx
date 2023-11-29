@@ -1,7 +1,7 @@
 import React from 'react';
 import {Blog} from '../../types';
 import {Link} from 'react-router-dom';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import {BLOG_PAGE} from '../../constansts/constanst.ts';
 
 interface Props {

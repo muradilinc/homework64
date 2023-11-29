@@ -20,13 +20,15 @@ const App = () => {
     setLoader(true);
     try {
       const response = await axiosApi.get<BlogApi>('blogs.json');
-      setBlogs(() => {
-        const blogsRes: BlogState[] = Object.keys(response.data).map(key => ({
-          idBlog: key,
-          blog: response.data[key],
-        }));
-        return blogsRes;
-      });
+      if (response.data){
+        setBlogs(() => {
+          const blogsRes: BlogState[] = Object.keys(response.data).map(key => ({
+            idBlog: key,
+            blog: response.data[key],
+          }));
+          return blogsRes;
+        });
+      }
     } catch (error) {
       alert('Error ' + error);
     } finally {

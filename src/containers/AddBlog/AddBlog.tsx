@@ -61,6 +61,14 @@ const AddBlog: React.FC<Props> = ({update}) => {
         navigate(`${BLOG_PAGE}/${id}`);
       } else {
         await axiosApi.post('blogs.json', {...dataBlog});
+        setBlog({
+          title: '',
+          description: '',
+          date: ''
+        });
+        if (update) {
+          update();
+        }
       }
     } catch (error) {
       alert('Error ' + error);

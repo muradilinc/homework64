@@ -30,7 +30,6 @@ const BlogViewMemoed: React.FC<Props> = React.memo(function BlogView({blog, idBl
     </div>
   );
 }, (prevProps, nextProps) => {
-  console.log(prevProps.blog === nextProps.blog);
   return prevProps.blog === nextProps.blog;
 });
 

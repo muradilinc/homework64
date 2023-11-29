@@ -53,6 +53,8 @@ const App = () => {
     }
   };
 
+  console.log(refreshData);
+
   return (
     <div>
       <Header/>
@@ -74,7 +76,7 @@ const App = () => {
                 </Route>
               </Route>
               <Route path={ADD_PAGE} element={(
-                <AddBlog/>
+                <AddBlog update={() => setRefreshData(prevState => !prevState)}/>
               )}/>
               <Route path="*" element={(
                 <h1>404 page or developing</h1>

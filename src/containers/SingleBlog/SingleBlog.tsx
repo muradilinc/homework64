@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Outlet, useLocation, useNavigate, useParams} from 'react-router-dom';
 import axiosApi from '../../axiosApi.ts';
 import {Blog} from '../../types';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import {BLOG_PAGE, EDIT_PAGE} from '../../constansts/constanst.ts';
 
 interface Props {

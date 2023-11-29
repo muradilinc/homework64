@@ -10,9 +10,11 @@ interface Props {
 }
 
 const BlogViewMemoed: React.FC<Props> = React.memo(function BlogView({blog, idBlog}) {
+  const formattedDate = dayjs(blog.date).format('YYYY.MM.DD HH:mm:ss');
+
   return (
     <div className="border border-black p-3 rounded-2xl">
-      <p className="text-gray-400">Crated on: <span>{dayjs(blog.date).format('YYYY.MM.DD HH:mm:ss')}</span></p>
+      <p className="text-gray-400">Crated on: <span>{formattedDate}</span></p>
       <div>
         <h3 className="text-3xl text-ellipsis">{blog.title}</h3>
       </div>

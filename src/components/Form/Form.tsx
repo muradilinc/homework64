@@ -10,7 +10,7 @@ interface Props {
 
 const Form: React.FC<Props> = ({postBlog, blog, changeBlog, id}) => {
   return (
-    <form onSubmit={postBlog} className="flex flex-col">
+    <form onSubmit={postBlog} className={`flex flex-col ${id ? '' : 'w-full'}`}>
       <div className="mb-3">
         <label
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

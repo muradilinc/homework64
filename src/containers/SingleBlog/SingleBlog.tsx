@@ -37,9 +37,11 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
       {
         blog ?
           <div>
-            <span>{dayjs(blog.date).format('YYYY.MM.DD HH:mm:ss')}</span>
-            <h1>{blog.title}</h1>
-            <p>{blog.description}</p>
+            <h1 className="text-3xl">{blog.title}</h1>
+            <span className="text-gray-400">Created on: {dayjs(blog.date).format('YYYY.MM.DD HH:mm:ss')}</span>
+            <div className="mt-3">
+              <p className="text-[18px]">{blog.description}</p>
+            </div>
           </div>
           :
           null
@@ -48,12 +50,17 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
   );
 
   return (
-    <div className="border border-black">
-      <div>
-        <button onClick={() => removeBlog(id ? id : '')}>delete blog</button>
-        <button onClick={() => navigate(`${BLOG_PAGE}/${id}${EDIT_PAGE}`)}>Edit blog</button>
-      </div>
+    <div className="relative border border-black p-3 rounded-2xl min-h-[700px]">
       {!statusEdit ? element : <Outlet/>}
+      {
+        !statusEdit ?
+          <div className="absolute bottom-[20px] right-5 flex justify-between w-[15%]">
+            <button className="bg-red-600 px-3 py-1 text-white capitalize rounded text-[18px]" onClick={() => removeBlog(id ? id : '')}>delete</button>
+            <button className="bg-green-600 px-3 py-1 text-white capitalize rounded text-[18px]" onClick={() => navigate(`${BLOG_PAGE}/${id}${EDIT_PAGE}`)}>edit</button>
+          </div>
+          :
+          null
+      }
     </div>
   );
 };

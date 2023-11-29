@@ -3,6 +3,7 @@ import {Blog, BlogMutation} from '../../types';
 import axiosApi from '../../axiosApi.ts';
 import {useNavigate, useParams} from 'react-router-dom';
 import {BLOG_PAGE} from '../../constansts/constanst.ts';
+import Form from '../../components/Form/Form.tsx';
 
 interface Props {
   update?: () => void;
@@ -30,9 +31,9 @@ const AddBlog: React.FC<Props> = ({update}) => {
     if (id) {
       void getBlog();
     }
-  },[getBlog, id]);
+  }, [getBlog, id]);
 
-  const changeBlog = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeBlog = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = event.target;
 
     setBlog(prevState => ({
@@ -52,7 +53,7 @@ const AddBlog: React.FC<Props> = ({update}) => {
     };
 
     try {
-      if (id){
+      if (id) {
         await axiosApi.put(`blogs/${id}.json`, {...dataBlog, date: blog.date});
         if (update) {
           update();
@@ -67,30 +68,18 @@ const AddBlog: React.FC<Props> = ({update}) => {
   };
 
   return (
-    <div>
-      <form onSubmit={postBlog}>
-        <div>
-          <input
-            value={blog.title}
-            onChange={changeBlog}
-            type="text"
-            name='title'
-            placeholder="Title"
-            required
-          />
-        </div>
-        <div>
-          <input
-            value={blog.description}
-            onChange={changeBlog}
-            name='description'
-            type="text"
-            placeholder="Description"
-          />
-        </div>
-        <button type='submit'>{id ? 'edit' : 'post'}</button>
-      </form>
-    </div>
+    <>
+      {
+        id ?
+          <div>
+            <Form blog={blog} changeBlog={changeBlog} postBlog={postBlog} id={id}/>
+          </div>
+          :
+          <div className="mt-16 flex justify-center w-[75%] mx-auto">
+            <Form blog={blog} changeBlog={changeBlog} postBlog={postBlog} id={id ? id : ''}/>
+          </div>
+      }
+    </>
   );
 };
 

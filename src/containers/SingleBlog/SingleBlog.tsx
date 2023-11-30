@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Outlet, useLocation, useNavigate, useParams} from 'react-router-dom';
-import axiosApi from '../../axiosApi.ts';
 import {Blog} from '../../types';
 import dayjs from 'dayjs';
-import {BLOG_PAGE, EDIT_PAGE} from '../../constansts/constanst.ts';
+import {BLOG_PAGE, EDIT_PAGE} from '../../constansts/constanst';
+import Preloader from '../../components/Preloader/Preloader';
+import {getSingleBlog} from '../../utils/GetSingleBlog/GetSingleBlog';
 
 interface Props {
   removeBlog: (id: string) => void;
@@ -14,14 +15,10 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [blog, setBlog] = useState<Blog | null>(null);
+  const [loader, setLoader] = useState(false);
 
-  const getBlog = useCallback(async () => {
-    try {
-      const response = await axiosApi.get(`blogs/${id}.json`);
-      setBlog(response.data);
-    } catch (error) {
-      alert('Error! ' + error);
-    }
+  const getBlog = useCallback(async (): Promise<void> => {
+    void getSingleBlog<Blog | null>(`blogs/${id}.json`, setBlog, setLoader);
   }, [id]);
 
   const statusEdit = location.pathname.includes('edit');
@@ -31,6 +28,8 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
       void getBlog();
     }
   }, [getBlog, statusEdit]);
+
+  console.log(blog);
 
   const element = (
     <>
@@ -51,15 +50,26 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
 
   return (
     <div className="relative border border-black p-3 rounded-2xl min-h-[700px]">
-      {!statusEdit ? element : <Outlet/>}
       {
-        !statusEdit ?
-          <div className="absolute bottom-[20px] right-5 flex justify-between w-[15%]">
-            <button className="bg-red-600 px-3 py-1 text-white capitalize rounded text-[18px]" onClick={() => removeBlog(id ? id : '')}>delete</button>
-            <button className="bg-green-600 px-3 py-1 text-white capitalize rounded text-[18px]" onClick={() => navigate(`${BLOG_PAGE}/${id}${EDIT_PAGE}`)}>edit</button>
-          </div>
+        loader ?
+          <Preloader/>
           :
-          null
+          <>
+            {!statusEdit ? element : <Outlet/>}
+            {
+              !statusEdit ?
+                <div className="absolute bottom-[20px] right-5 flex justify-between w-[15%]">
+                  <button className="bg-red-600 px-3 py-1 text-white capitalize rounded text-[18px]"
+                          onClick={() => removeBlog(id ? id : '')}>delete
+                  </button>
+                  <button className="bg-green-600 px-3 py-1 text-white capitalize rounded text-[18px]"
+                          onClick={() => navigate(`${BLOG_PAGE}/${id}${EDIT_PAGE}`)}>edit
+                  </button>
+                </div>
+                :
+                null
+            }
+          </>
       }
     </div>
   );

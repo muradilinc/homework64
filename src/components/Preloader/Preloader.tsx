@@ -1,4 +1,6 @@
-const Preloader = () => {
+import React from 'react';
+
+const Preloader: React.FC = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div role="status">

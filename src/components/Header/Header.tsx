@@ -1,5 +1,5 @@
 import {Link, NavLink} from 'react-router-dom';
-import {ABOUT_PAGE, ADD_PAGE, CONTACT_PAGE, HOME_PAGE} from '../../constansts/constanst.ts';
+import {ABOUT_PAGE, ADD_PAGE, CONTACT_PAGE, HOME_PAGE} from '../../constansts/constanst';
 
 const Header = () => {
   return (

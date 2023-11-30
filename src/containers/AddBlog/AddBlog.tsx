@@ -1,9 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Blog, BlogMutation} from '../../types';
-import axiosApi from '../../axiosApi.ts';
+import axiosApi from '../../axiosApi';
 import {useNavigate, useParams} from 'react-router-dom';
-import {BLOG_PAGE} from '../../constansts/constanst.ts';
-import Form from '../../components/Form/Form.tsx';
+import {BLOG_PAGE} from '../../constansts/constanst';
+import Form from '../../components/Form/Form';
+import Preloader from '../../components/Preloader/Preloader';
+import {getSingleBlog} from '../../utils/GetSingleBlog/GetSingleBlog';
 
 interface Props {
   update?: () => void;
@@ -17,14 +19,10 @@ const AddBlog: React.FC<Props> = ({update}) => {
     description: '',
     date: ''
   });
+  const [loader, setLoader] = useState(false);
 
   const getBlog = useCallback(async () => {
-    try {
-      const response = await axiosApi.get(`blogs/${id}.json`);
-      setBlog(response.data);
-    } catch (error) {
-      alert('Error! ' + error);
-    }
+    void getSingleBlog<BlogMutation>(`blogs/${id}.json`, setBlog, setLoader);
   }, [id]);
 
   useEffect(() => {
@@ -80,11 +78,19 @@ const AddBlog: React.FC<Props> = ({update}) => {
       {
         id ?
           <div>
-            <Form blog={blog} changeBlog={changeBlog} postBlog={postBlog} id={id}/>
+            {
+              loader ?
+                <Preloader/>
+                :
+                <Form blog={blog} changeBlog={changeBlog} postBlog={postBlog} id={id}/>
+            }
           </div>
           :
           <div className="mt-16 flex justify-center w-[75%] mx-auto">
-            <Form blog={blog} changeBlog={changeBlog} postBlog={postBlog} id={id ? id : ''}/>
+            <div className="border border-black w-full p-5">
+              <h2 className="text-3xl">Add new blog</h2>
+              <Form blog={blog} changeBlog={changeBlog} postBlog={postBlog} id={id ? id : ''}/>
+            </div>
           </div>
       }
     </>

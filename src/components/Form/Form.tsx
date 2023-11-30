@@ -10,7 +10,7 @@ interface Props {
 
 const Form: React.FC<Props> = ({postBlog, blog, changeBlog, id}) => {
   return (
-    <form onSubmit={postBlog} className={`flex flex-col ${id ? '' : 'w-full'}`}>
+    <form onSubmit={postBlog} className={`flex flex-col`}>
       <div className="mb-3">
         <label
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -36,6 +36,8 @@ const Form: React.FC<Props> = ({postBlog, blog, changeBlog, id}) => {
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           value={blog.description}
           onChange={changeBlog}
+          rows={10}
+          cols={45}
           name="description"
           placeholder="Description"
         />

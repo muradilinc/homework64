@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axiosApi from '../../axiosApi';
-import {Blog, BlogMutation} from '../../types';
+import {Blog} from '../../types';
 import {getSingleBlog} from '../../utils/GetSingleBlog/GetSingleBlog';
 import {BLOG_PAGE} from '../../constansts/constanst';
 import Form from '../../components/Form/Form';
@@ -14,7 +14,8 @@ interface Props {
 const AddBlog: React.FC<Props> = ({update}) => {
   const {id} = useParams();
   const navigate = useNavigate();
-  const [blog, setBlog] = useState<BlogMutation>({
+  const [blog, setBlog] = useState<Blog>({
+    id: 0,
     title: '',
     description: '',
     date: ''
@@ -22,7 +23,7 @@ const AddBlog: React.FC<Props> = ({update}) => {
   const [loader, setLoader] = useState(false);
 
   const getBlog = useCallback(async () => {
-    void getSingleBlog<BlogMutation>(`blogs/${id}.json`, setBlog, setLoader);
+    void getSingleBlog<Blog>(`blogs/${id}.json`, setBlog, setLoader);
   }, [id]);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const AddBlog: React.FC<Props> = ({update}) => {
 
     try {
       if (id) {
-        await axiosApi.put(`blogs/${id}.json`, {...dataBlog, date: blog.date});
+        await axiosApi.put(`blogs/${id}.json`, {...dataBlog, date: blog.date, id: blog.id});
         if (update) {
           update();
         }
@@ -60,6 +61,7 @@ const AddBlog: React.FC<Props> = ({update}) => {
       } else {
         await axiosApi.post('blogs.json', {...dataBlog});
         setBlog({
+          id: 0,
           title: '',
           description: '',
           date: ''

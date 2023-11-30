@@ -1,11 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {BlogMutation} from '../../types';
+import {Blog} from '../../types';
 import {BLOG_PAGE} from '../../constansts/constanst';
 
 interface Props {
   postBlog: (event: React.FormEvent) => void;
-  blog: BlogMutation;
+  blog: Blog;
   changeBlog: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   id: string;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import {BlogMutation} from '../../types';
-import {ABOUT_PAGE, BLOG_PAGE} from '../../constansts/constanst';
 import {Link} from 'react-router-dom';
+import {BlogMutation} from '../../types';
+import {BLOG_PAGE} from '../../constansts/constanst';
 
 interface Props {
   postBlog: (event: React.FormEvent) => void;

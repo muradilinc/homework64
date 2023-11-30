@@ -2,16 +2,17 @@ import React, {useEffect, useState} from 'react';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 
 import axiosApi from '../../axiosApi';
-import {ABOUT_PAGE, ADD_PAGE, BLOG_PAGE, EDIT_PAGE, HOME_PAGE} from '../../constansts/constanst';
+import {ABOUT_PAGE, ADD_PAGE, BLOG_PAGE, CONTACT_PAGE, EDIT_PAGE, HOME_PAGE} from '../../constansts/constanst';
+import {desc} from '../../constansts/text';
 import {BlogState} from '../../types';
+import {getContent} from '../../utils/GetContent/GetContent';
 import Header from '../../components/Header/Header';
 import Home from '../Home/Home';
 import AddBlog from '../AddBlog/AddBlog';
 import SingleBlog from '../SingleBlog/SingleBlog';
-import {getContent} from '../../utils/GetContent/GetContent';
 import About from '../About/About';
 import EditPage from '../EditPage/EditPage';
-import {desc} from '../../constansts/text';
+import Contact from '../Contact/Contact';
 
 const App = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const App = () => {
       const response = await axiosApi.get('about.json');
       setOldText(response.data.text);
       setDescription(response.data.text);
-    }catch (error) {
+    } catch (error) {
       alert('Error! ' + error);
     } finally {
       setLoader(false);
@@ -119,6 +120,7 @@ const App = () => {
               />
             )}/>
           </Route>
+          <Route path={`${CONTACT_PAGE}`} element={<Contact/>}/>
           <Route path="*" element={(
             <h1>404 page or developing</h1>
           )}/>

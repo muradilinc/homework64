@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Outlet, useLocation, useNavigate, useParams} from 'react-router-dom';
-import {Blog} from '../../types';
 import dayjs from 'dayjs';
+import {Blog} from '../../types';
 import {BLOG_PAGE, EDIT_PAGE} from '../../constansts/constanst';
-import Preloader from '../../components/Preloader/Preloader';
 import {getSingleBlog} from '../../utils/GetSingleBlog/GetSingleBlog';
+import Preloader from '../../components/Preloader/Preloader';
 
 interface Props {
   removeBlog: (id: string) => void;

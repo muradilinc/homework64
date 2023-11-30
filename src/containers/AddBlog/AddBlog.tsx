@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Blog, BlogMutation} from '../../types';
-import axiosApi from '../../axiosApi';
 import {useNavigate, useParams} from 'react-router-dom';
+import axiosApi from '../../axiosApi';
+import {Blog, BlogMutation} from '../../types';
+import {getSingleBlog} from '../../utils/GetSingleBlog/GetSingleBlog';
 import {BLOG_PAGE} from '../../constansts/constanst';
 import Form from '../../components/Form/Form';
 import Preloader from '../../components/Preloader/Preloader';
-import {getSingleBlog} from '../../utils/GetSingleBlog/GetSingleBlog';
 
 interface Props {
   update?: () => void;

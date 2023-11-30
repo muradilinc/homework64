@@ -1,5 +1,7 @@
 import React from 'react';
 import {BlogMutation} from '../../types';
+import {ABOUT_PAGE, BLOG_PAGE} from '../../constansts/constanst';
+import {Link} from 'react-router-dom';
 
 interface Props {
   postBlog: (event: React.FormEvent) => void;
@@ -42,8 +44,16 @@ const Form: React.FC<Props> = ({postBlog, blog, changeBlog, id}) => {
           placeholder="Description"
         />
       </div>
-      <button className="self-end mt-3 bg-green-600 px-3 py-1 text-white capitalize rounded text-[18px]"
-              type="submit">{id ? 'save' : 'post'}</button>
+      <div className="self-end">
+        {
+          id ?
+            <Link to={`${BLOG_PAGE}/${id}`} className="text-gray-900 mr-3 capitalize bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">cancel</Link>
+            :
+            null
+        }
+        <button className="mt-3 bg-green-600 px-3 py-1 text-white capitalize rounded text-[18px]"
+                type="submit">{id ? 'save' : 'post'}</button>
+      </div>
     </form>
   );
 };

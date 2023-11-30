@@ -29,8 +29,6 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
     }
   }, [getBlog, statusEdit]);
 
-  console.log(blog);
-
   const element = (
     <>
       {

@@ -83,8 +83,6 @@ const App = () => {
     }
   };
 
-  console.log(description);
-
   return (
     <div>
       <Header/>
@@ -108,6 +106,7 @@ const App = () => {
           )}/>
           <Route path={ABOUT_PAGE} element={(
             <About
+              loader={loader}
               onRecovery={recoveryText}
               desc={oldText}
             />

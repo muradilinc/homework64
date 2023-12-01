@@ -45,7 +45,13 @@ const App = () => {
     try {
       await axiosApi.delete(`blogs/${id}.json`);
       navigate(HOME_PAGE);
-      void getContent('blogs.json', setBlogs, setLoader);
+      if (blogs.length < 2) {
+        setBlogs(prevState => {
+          return prevState.filter(blog => blog.idBlog !== id);
+        });
+      } else {
+        void getContent('blogs.json', setBlogs, setLoader);
+      }
     } catch (error) {
       toast.error('Sorry, error!');
     } finally {

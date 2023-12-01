@@ -56,6 +56,9 @@ const AddBlog: React.FC<Props> = ({update}) => {
       if (id) {
         await axiosApi.put(`blogs/${id}.json`, {...dataBlog, date: blog.date, id: blog.id});
         navigate(`${BLOG_PAGE}/${id}`);
+        if (update) {
+          update();
+        }
         toast.success('Blog changed!');
       } else {
         await axiosApi.post('blogs.json', {...dataBlog});
@@ -65,14 +68,13 @@ const AddBlog: React.FC<Props> = ({update}) => {
           description: '',
           date: ''
         });
+        if (update) {
+          update();
+        }
         toast.success('Blog created!');
       }
     } catch (error) {
       toast.error('Sorry, error!');
-    } finally {
-      if (update) {
-        update();
-      }
     }
   };
 

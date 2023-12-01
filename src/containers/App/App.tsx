@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 
 import axiosApi from '../../axiosApi';
+import {toast, ToastContainer} from 'react-toastify';
 import {ABOUT_PAGE, ADD_PAGE, BLOG_PAGE, CONTACT_PAGE, EDIT_PAGE, HOME_PAGE} from '../../constansts/constanst';
 import {desc} from '../../constansts/text';
 import {BlogState} from '../../types';
@@ -46,9 +47,10 @@ const App = () => {
       navigate(HOME_PAGE);
       void getContent('blogs.json', setBlogs, setLoader);
     } catch (error) {
-      alert('Error! ' + error);
+      toast.error('Sorry, error!');
     } finally {
       setLoader(false);
+      toast.success('Blog deleted!');
     }
   };
 
@@ -56,7 +58,7 @@ const App = () => {
     setDescription(event.target.value);
   };
 
-  const saveDescription = async (event: React.FormEvent) => {
+  const saveDescription = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
 
     setLoader(true);
@@ -65,27 +67,41 @@ const App = () => {
       void aboutText();
       navigate(`${ABOUT_PAGE}`);
     } catch (error) {
-      alert('Error! ' + error);
+      toast.error('Sorry, error!');
     } finally {
       setLoader(false);
+      toast.success('Text saved!');
     }
   };
 
-  const recoveryText = async () => {
+  const recoveryText = async (): Promise<void> => {
     setLoader(true);
     try {
       await axiosApi.put('/about.json', {text: desc});
       void aboutText();
       setDescription(desc);
     } catch (error) {
-      alert('Error! ' + error);
+      toast.error('Sorry, error!');
     } finally {
+      toast.success('Recovered text!');
       setLoader(false);
     }
   };
 
   return (
-    <div>
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Header/>
       <div className="container mx-auto">
         <Routes>
@@ -126,7 +142,7 @@ const App = () => {
           )}/>
         </Routes>
       </div>
-    </div>
+    </>
   );
 };
 

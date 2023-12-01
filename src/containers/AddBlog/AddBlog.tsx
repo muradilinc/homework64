@@ -6,6 +6,7 @@ import {getSingleBlog} from '../../utils/GetSingleBlog/GetSingleBlog';
 import {BLOG_PAGE} from '../../constansts/constanst';
 import Form from '../../components/Form/Form';
 import Preloader from '../../components/Preloader/Preloader';
+import {toast} from 'react-toastify';
 
 interface Props {
   update?: () => void;
@@ -54,10 +55,8 @@ const AddBlog: React.FC<Props> = ({update}) => {
     try {
       if (id) {
         await axiosApi.put(`blogs/${id}.json`, {...dataBlog, date: blog.date, id: blog.id});
-        if (update) {
-          update();
-        }
         navigate(`${BLOG_PAGE}/${id}`);
+        toast.success('Blog changed!');
       } else {
         await axiosApi.post('blogs.json', {...dataBlog});
         setBlog({
@@ -66,12 +65,14 @@ const AddBlog: React.FC<Props> = ({update}) => {
           description: '',
           date: ''
         });
-        if (update) {
-          update();
-        }
+        toast.success('Blog created!');
       }
     } catch (error) {
-      alert('Error ' + error);
+      toast.error('Sorry, error!');
+    } finally {
+      if (update) {
+        update();
+      }
     }
   };
 

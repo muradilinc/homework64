@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axiosApi from '../../axiosApi';
+import {toast} from 'react-toastify';
 
 const Contact = () => {
   const [contact, setContact] = useState({
@@ -29,13 +30,15 @@ const Contact = () => {
 
     try {
       await axiosApi.post('/contact.json', contactData);
+    } catch (error) {
+      toast.error('Sorry, error');
+    } finally {
       setContact({
         name: '',
         email: '',
         message: ''
       });
-    } catch (error) {
-      alert('Error! ' + error);
+      toast.success('Sent message');
     }
   };
 

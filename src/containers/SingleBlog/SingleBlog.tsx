@@ -17,6 +17,7 @@ const SingleBlog: React.FC<Props> = ({removeBlog}) => {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loader, setLoader] = useState(false);
 
+
   const getBlog = useCallback(async (): Promise<void> => {
     void getSingleBlog<Blog | null>(`blogs/${id}.json`, setBlog, setLoader);
   }, [id]);
